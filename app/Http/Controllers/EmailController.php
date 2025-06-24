@@ -16,8 +16,9 @@ class EmailController extends Controller
         $request->validate([
             'name'    => 'required|string|max:100',
             'email'   => 'required|email',
-            'message' => 'required|string',
-            'subject' => 'nullable|string',
+            'phone' => 'required|string',
+            'service' => 'required|string',
+            'message' => 'required|string'
         ]);
 
         $subject = $request->subject ?? 'New Website Contact Enquiry';
@@ -42,6 +43,8 @@ class EmailController extends Controller
             $mail->Body = view('email_template.enquiries_view', [
                 'name' => $request->name,
                 'email' => $request->email,
+                'phone' => $request->phone,
+                'service' => $request->service,
                 'message' => $request->message
             ])->render();
             $mail->AltBody = strip_tags($request->message);
@@ -64,16 +67,14 @@ class EmailController extends Controller
 
         return response()->json([
             'success' => true,
-            'status' => 'success',
-            'status_code' => 200,
-            'status_message' => 'success',
             'message' => 'Email sent successfully',
             'data' => [
                 'name' => $request->name,
                 'email' => $request->email,
+                'phone' => $request->phone,
+                'service' => $request->service,
                 'subject' => $subject,
                 'message' => $request->message
-
             ],
         ]);
     }

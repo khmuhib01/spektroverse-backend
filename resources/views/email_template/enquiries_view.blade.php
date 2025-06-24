@@ -9,6 +9,7 @@
         <tr>
             <td align="center" style="padding: 30px 20px;">
                 <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.05);">
+
                     <!-- Header -->
                     <tr>
                         <td style="padding: 20px 30px; border-bottom: 1px solid #dddddd;">
@@ -21,6 +22,8 @@
                         <td style="padding: 20px 30px; font-family: Arial, sans-serif; font-size: 15px; color: #333333;">
                             <p style="margin: 0;"><strong style="color: #111827;">Name:</strong> {{ $name }}</p>
                             <p style="margin: 8px 0 0;"><strong style="color: #111827;">Email:</strong> {{ $email }}</p>
+                            <p style="margin: 8px 0 0;"><strong style="color: #111827;">Phone:</strong> {{ $phone }}</p>
+                            <p style="margin: 8px 0 0;"><strong style="color: #111827;">Service:</strong> {{ $service }}</p>
                         </td>
                     </tr>
 
@@ -36,7 +39,7 @@
                     <tr>
                         <td bgcolor="#f6f8fb" style="padding: 20px 30px; font-family: Arial, sans-serif; font-size: 13px; color: #777777; border-top: 1px solid #eeeeee; text-align: center;">
                             This message was submitted via the contact form on
-                            <a href="http://spektroverse.com" style="color: #1e40af; text-decoration: none;"><strong><a href="http://spektroverse.com">spektroverse.com</a></strong></a>.
+                            <a href="http://spektroverse.com" style="color: #1e40af; text-decoration: none;"><strong>spektroverse.com</strong></a>.
                         </td>
                     </tr>
                 </table>
