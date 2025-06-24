@@ -33,7 +33,7 @@ class EmailController extends Controller
             $mail->Port = 465;
 
             // Sender and recipient
-            $mail->setFrom('no-reply@spektroverse.com', 'Spektroverse');
+            $mail->setFrom('no-reply@spektroverse.com', 'Spektroverse Support');
             $mail->addAddress('info@spektroverse.com'); // recipient
             $mail->addReplyTo($request->email, $request->name);
 
