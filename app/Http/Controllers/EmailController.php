@@ -10,6 +10,9 @@ class EmailController extends Controller
 {
     public function sendEmail(Request $request)
     {
+
+        // dd($request->all());
+
         $request->validate([
             'name'    => 'required|string|max:100',
             'email'   => 'required|email',
@@ -63,7 +66,9 @@ class EmailController extends Controller
             $thankYou->Port = 465;
 
             $thankYou->setFrom('no-reply@spektroverse.com', 'Spektroverse Support');
-            $thankYou->addAddress($request->email, $request->name);
+            $thankYou->addAddress($request->email);
+
+            //$request->email, $request->name
 
             $thankYou->isHTML(true);
             $thankYou->Subject = 'Thank You for Contacting Spektroverse';
