@@ -36,7 +36,7 @@
                     <tr>
                         <td bgcolor="#f6f8fb" style="padding: 20px 30px; font-family: Arial, sans-serif; font-size: 13px; color: #777777; border-top: 1px solid #eeeeee; text-align: center;">
                             This message was submitted via the contact form on
-                            <a href="http://spektroverse.com" style="color: #1e40af; text-decoration: none;"><strong>spektroverse.com</strong></a>.
+                            <a href="http://spektroverse.com" style="color: #1e40af; text-decoration: none;"><strong><a href="http://spektroverse.com">spektroverse.com</a></strong></a>.
                         </td>
                     </tr>
                 </table>

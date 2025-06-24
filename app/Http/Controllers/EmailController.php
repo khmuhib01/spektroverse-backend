@@ -53,35 +53,12 @@ class EmailController extends Controller
                 'details' => $mail->ErrorInfo
             ], 500);
         }
+        $welcomeSend = $this->welcomeMail($request);
 
-        // SEND THANK-YOU TO USER
-        $thankYou = new PHPMailer(true);
-        try {
-            $thankYou->isSMTP();
-            $thankYou->Host = 'smtp.hostinger.com';
-            $thankYou->SMTPAuth = true;
-            $thankYou->Username = 'no-reply@spektroverse.com';
-            $thankYou->Password = 'Spektroverse@2025#';
-            $thankYou->SMTPSecure = 'ssl';
-            $thankYou->Port = 465;
-
-            $thankYou->setFrom('no-reply@spektroverse.com', 'Spektroverse Support');
-            $thankYou->addAddress($request->email);
-
-            //$request->email, $request->name
-
-            $thankYou->isHTML(true);
-            $thankYou->Subject = 'Thank You for Contacting Spektroverse';
-            $thankYou->Body = view('email_template.thank_you', [
-                'name' => $request->name
-            ])->render();
-            $thankYou->AltBody = 'Thank you for reaching out. We have received your message and will get back to you soon.';
-
-            $thankYou->send();
-        } catch (Exception $e) {
+        if (!$welcomeSend) {
             return response()->json([
-                'error' => 'Failed to send thank-you email',
-                'details' => $thankYou->ErrorInfo
+                'error' => 'Failed to send main email',
+                'details' => $mail->ErrorInfo
             ], 500);
         }
 
@@ -99,5 +76,44 @@ class EmailController extends Controller
 
             ],
         ]);
+    }
+
+
+    public function welcomeMail($request)
+    {
+        $thankYou = new PHPMailer(true);
+
+        try {
+            $thankYou->isSMTP();
+            $thankYou->Host = 'smtp.hostinger.com';
+            $thankYou->SMTPAuth = true;
+            $thankYou->Username = 'no-reply@spektroverse.com';
+            $thankYou->Password = 'Spektroverse@2025#'; // 🔁 Change after testing
+            $thankYou->SMTPSecure = 'ssl';
+            $thankYou->Port = 465;
+
+            $thankYou->CharSet = 'UTF-8';
+            $thankYou->Hostname = 'spektroverse.com';
+
+            $thankYou->setFrom('no-reply@spektroverse.com', 'Spektroverse Support');
+            $thankYou->addAddress($request->email);
+
+            $thankYou->isHTML(true);
+            $thankYou->Subject = 'Thank You for Contacting Spektroverse';
+
+            $thankYou->Body = view('email_template.thank_you', [
+                'name' => $request->name
+            ])->render();
+
+            $thankYou->AltBody = 'Thank you for reaching out. We have received your message and will get back to you soon.';
+
+            $thankYou->send();
+            return true;
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Failed to send thank-you email',
+                'details' => $thankYou->ErrorInfo
+            ], 500);
+        }
     }
 }
