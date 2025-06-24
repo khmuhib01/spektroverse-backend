@@ -19,45 +19,80 @@ class EmailController extends Controller
 
         $subject = $request->subject ?? 'New Website Contact Enquiry';
 
+        // SEND ENQUIRY TO ADMIN
         $mail = new PHPMailer(true);
-
         try {
-            // Server settings
-            $mail->SMTPDebug = 0;
             $mail->isSMTP();
             $mail->Host = 'smtp.hostinger.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'no-reply@spektroverse.com';
             $mail->Password = 'Spektroverse@2025#';
-            $mail->SMTPSecure = 'ssl'; // for port 465 use 'ssl'
+            $mail->SMTPSecure = 'ssl';
             $mail->Port = 465;
 
-            // Sender and recipient
             $mail->setFrom('no-reply@spektroverse.com', 'Spektroverse Support');
-            $mail->addAddress('info@spektroverse.com'); // recipient
+            $mail->addAddress('info@spektroverse.com');
             $mail->addReplyTo($request->email, $request->name);
 
-            // Email content
             $mail->isHTML(true);
             $mail->Subject = $subject;
-
-            // You can customize the email content here
             $mail->Body = view('email_template.enquiries_view', [
                 'name' => $request->name,
                 'email' => $request->email,
                 'message' => $request->message
             ])->render();
-
             $mail->AltBody = strip_tags($request->message);
 
             $mail->send();
-
-            return response()->json(['message' => 'Email sent successfully']);
         } catch (Exception $e) {
             return response()->json([
-                'error' => 'Failed to send email',
+                'error' => 'Failed to send main email',
                 'details' => $mail->ErrorInfo
             ], 500);
         }
+
+        // SEND THANK-YOU TO USER
+        $thankYou = new PHPMailer(true);
+        try {
+            $thankYou->isSMTP();
+            $thankYou->Host = 'smtp.hostinger.com';
+            $thankYou->SMTPAuth = true;
+            $thankYou->Username = 'no-reply@spektroverse.com';
+            $thankYou->Password = 'Spektroverse@2025#';
+            $thankYou->SMTPSecure = 'ssl';
+            $thankYou->Port = 465;
+
+            $thankYou->setFrom('no-reply@spektroverse.com', 'Spektroverse Support');
+            $thankYou->addAddress($request->email, $request->name);
+
+            $thankYou->isHTML(true);
+            $thankYou->Subject = 'Thank You for Contacting Spektroverse';
+            $thankYou->Body = view('email_template.thank_you', [
+                'name' => $request->name
+            ])->render();
+            $thankYou->AltBody = 'Thank you for reaching out. We have received your message and will get back to you soon.';
+
+            $thankYou->send();
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Failed to send thank-you email',
+                'details' => $thankYou->ErrorInfo
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'status' => 'success',
+            'status_code' => 200,
+            'status_message' => 'success',
+            'message' => 'Email sent successfully',
+            'data' => [
+                'name' => $request->name,
+                'email' => $request->email,
+                'subject' => $subject,
+                'message' => $request->message
+
+            ],
+        ]);
     }
 }
